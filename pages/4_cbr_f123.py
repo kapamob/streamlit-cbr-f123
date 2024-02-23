@@ -1,9 +1,8 @@
-
 import streamlit as st
 from streamlit.logger import get_logger
 
 import urllib.request
-import rarfile
+import rarfile.exctract
 from io import BytesIO
 from dbfread import DBF, FieldParser, InvalidValue
 from pandas import DataFrame
