@@ -4,6 +4,6 @@ pandas
 pydeck
 streamlit
 urllib
-rarfile
+git+https://github.com/markokr/rarfile
 io
 dbfread
