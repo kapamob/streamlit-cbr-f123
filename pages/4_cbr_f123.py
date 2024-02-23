@@ -3,6 +3,7 @@ from streamlit.logger import get_logger
 
 import urllib.request
 import rarfile
+import subprocess
 from io import BytesIO
 from dbfread import DBF, FieldParser, InvalidValue
 from pandas import DataFrame
@@ -26,9 +27,10 @@ def run():
 
 
     resp = urllib.request.urlopen('https://www.cbr.ru/vfs/credit/forms/123-20240101.rar')
-    r = rarfile.RarFile(BytesIO(resp.read()))
-    r.namelist()
-    r.extract("122023_123D.dbf")
+    subprocess.run('7z x -oOutdir BytesIO(resp.read())')
+    #r = rarfile.RarFile(BytesIO(resp.read()))
+    #r.namelist()
+    #r.extract("122023_123D.dbf")
     st.write('ok')
 
 
