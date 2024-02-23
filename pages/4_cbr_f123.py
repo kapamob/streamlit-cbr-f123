@@ -27,10 +27,9 @@ def run():
 
 
     resp = urllib.request.urlopen('https://www.cbr.ru/vfs/credit/forms/123-20240101.rar')
-    subprocess.run('7z x -oOutdir BytesIO(resp.read())')
-    #r = rarfile.RarFile(BytesIO(resp.read()))
-    #r.namelist()
-    #r.extract("122023_123D.dbf")
+    r = rarfile.RarFile(BytesIO(resp.read()))
+    r.namelist()
+    r.extract('122023_123D.dbf')
     st.write('ok')
 
 
