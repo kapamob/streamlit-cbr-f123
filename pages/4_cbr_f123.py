@@ -46,12 +46,12 @@ def run():
             return super(MyFieldParser, self).parseD(field, data)
     
     # Load content of a DBF file into a Pandas data frame
-    dbf = DBF('/content/122023_123D.dbf', parserclass=MyFieldParser)
+    dbf = DBF('122023_123D.dbf', parserclass=MyFieldParser)
     frame = DataFrame(iter(dbf))
     zero = frame[frame['C1'] == '000'] #создаем фрейм в который загоняем только строку 000 - с итоговым значением капитала
     
     # загружаем файл с названиями банков
-    dbf2 = DBF('/content/122023_123B.dbf', parserclass=MyFieldParser, encoding='cp866')
+    dbf2 = DBF('122023_123B.dbf', parserclass=MyFieldParser, encoding='cp866')
     frame2 = DataFrame(iter(dbf2))
     frame3 = frame2[['REGN','NAME_B']]
     zero=zero.merge(frame3, how = 'left')
