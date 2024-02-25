@@ -6,14 +6,13 @@ import rarfile
 from io import BytesIO
 from dbfread import DBF, FieldParser, InvalidValue
 from pandas import DataFrame
+from streamlit.hello.utils import show_code
 
 LOGGER = get_logger(__name__)
 
-def run():
-    st.set_page_config(
-        page_title="Капитал банков по ф.123",
-        page_icon="f123",
-    )
+def cbr_f123():
+    st.set_page_config(page_title="Капитал банков по ф.123", page_icon="📊")
+    st.sidebar.header("Капитал банков")
 
     st.write("# Капитал банков по ф.123")
     st.text("Выберите дату, за которую нужно отобразить данные.")
@@ -92,5 +91,8 @@ def run():
     st.dataframe(data=df, column_order=("RANK","REGN","NAME_B","C3"), column_config={"REGN": "Рег.номер","NAME_B":"Наименование банка","C3":"Значение капитала"}, hide_index=True)
     
     st.text("Источник данных: https://www.cbr.ru/banking_sector/otchetnost-kreditnykh-organizaciy/")
-if __name__ == "__main__":
-    run()
+
+cbr_f123()
+
+show_code(cbr_f123)
+
