@@ -2,8 +2,8 @@ import streamlit as st
 from streamlit.logger import get_logger
 
 import urllib.request
+import urllib.error
 import rarfile
-import subprocess
 from io import BytesIO
 from dbfread import DBF, FieldParser, InvalidValue
 from pandas import DataFrame
@@ -12,52 +12,97 @@ LOGGER = get_logger(__name__)
 
 def run():
     st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
+        page_title="Капитал банков по ф.123",
+        page_icon="f123",
     )
 
-    st.write("# Капитал банка по ф.123")
+    st.write("# Капитал банков по ф.123")
 
-    st.markdown(
-        """
-        
-    """
-    )
+    st.text("Выберите дату, за который нужно отобразить данные.")
 
-
-
-    resp = urllib.request.urlopen('https://www.cbr.ru/vfs/credit/forms/123-20240101.rar')
-    r = rarfile.RarFile(BytesIO(resp.read()))
-    r.namelist()
-    r.extract('122023_123D.dbf')
-    st.write('ok')
+    v_year = st.selectbox("Год",list(reversed(range(2000,2024))))
+    v_month = st.selectbox("Месяц",list(range(1,13)))
     
-    r.extract("122023_123B.dbf")
+    if v_month == 12:
+        v_file = str(v_month) + str(v_year)
+        v_year = v_year+1
+        v_url_date = str(v_year) + "0101"
+        v_txt_date = "01.01." + str(v_year)
+    if v_month > 9 and v_month < 12:
+        v_file = str(v_month) + str(v_year)
+        v_month = v_month+1
+        v_url_date = str(v_year) + str(v_month) + "01"
+        v_txt_date = "01." + str(v_month) + "." + str(v_year)
+    if v_month == 9:
+        v_file = "0" + str(v_month) + str(v_year)
+        v_month = v_month+1
+        v_url_date = str(v_year) + str(v_month) + "01"
+        v_txt_date = "01." + str(v_month) + "." + str(v_year)
+    if v_month < 9:
+        v_file = "0" + str(v_month) + str(v_year)
+        v_month = v_month+1
+        v_url_date = str(v_year) + "0" + str(v_month) + "01"
+        v_txt_date = "01.0" + str(v_month) + "." + str(v_year)
+
     
-    # класс для правильного разбора ф.123
-    # https://github.com/olemb/dbfread/issues/20#issuecomment-490289235
+    st.text (v_url_date)
+    st.text (v_file)
+
+    v_num = st.slider('Количество банков в списке:', 0, 1000, 15)
+    v_file_b=v_file + "_123B.dbf"
+    v_file_d=v_file + "_123D.dbf"
+    v_url = "https://www.cbr.ru/vfs/credit/forms/123-" + v_url_date + ".rar"
+    #st.text (v_url)
+    #resp = urllib.request.urlopen(v_url)
+    v_url2 = "https://www.cbr.ru/vfs/credit/forms/123-20240101.rar"
+    
+    try:
+        with urllib.request.urlopen(v_url) as resp:
+            #resp = response.read()
+            r = rarfile.RarFile(BytesIO(resp.read()))
+            st.text ("Капитал банков на " + v_txt_date + " г.")
+            st.text (v_url)
+    except urllib.error.URLError:
+        with urllib.request.urlopen(v_url2) as resp:
+            #resp = response.read()
+            r = rarfile.RarFile(BytesIO(resp.read()))
+            v_file_b = "122023_123B.dbf"
+            v_file_d = "122023_123D.dbf"
+            st.text ("На выбранную дату данные не найдены, ")
+            st.text ("Капитал банков на 01.01.2024 г.")
+            st.text (v_url2)
+
+    #print(data.decode('utf-8'))  # выводит ответ сервера в удобочитаемом формате
+
+    #r = rarfile.RarFile(BytesIO(resp.read()))
+    r.extract(v_file_b)
+    r.extract(v_file_d)
+    
+    # special class for correct parsing f123 from dbf. source: https://github.com/olemb/dbfread/issues/20#issuecomment-490289235
     class MyFieldParser(FieldParser):
         def parseN(self, field, data):
             data = data.strip().strip(b'*\x00')  # Had to strip out the other characters first before \x00, as per super function specs.
             return super(MyFieldParser, self).parseN(field, data)
-    
+
         def parseD(self, field, data):
             data = data.strip(b'\x00')
             return super(MyFieldParser, self).parseD(field, data)
     
-    # Load content of a DBF file into a Pandas data frame
-    dbf = DBF('122023_123D.dbf', parserclass=MyFieldParser)
-    frame = DataFrame(iter(dbf))
-    zero = frame[frame['C1'] == '000'] #создаем фрейм в который загоняем только строку 000 - с итоговым значением капитала
+    # load content of a dbf file into a Pandas data frame
+    dbf = DBF(v_file_d, parserclass=MyFieldParser)
+    df = DataFrame(iter(dbf))
+    df = df[df['C1'] == '000'] #create frame with specific row - '000' that contains the total value of capital
+        
+    # load content of a dbf file into a Pandas data frame
+    dbf_names = DBF(v_file_b, parserclass=MyFieldParser, encoding='cp866')
+    df_names = DataFrame(iter(dbf_names))
+    df_names = df_names[['REGN','NAME_B']]
+    df=df.merge(df_names, how = 'left')
+    df=df.sort_values(by="C3", ascending=[False]).head(v_num)
+    df.insert(0, "RANK", range(1, 1 + len(df)))
+    st.dataframe(data=df, column_order=("RANK","REGN","NAME_B","C3"), column_config={"REGN": "Рег.номер","NAME_B":"Наименование банка","C3":"Значение капитала"}, hide_index=True)
     
-    # загружаем файл с названиями банков
-    dbf2 = DBF('122023_123B.dbf', parserclass=MyFieldParser, encoding='cp866')
-    frame2 = DataFrame(iter(dbf2))
-    frame3 = frame2[['REGN','NAME_B']]
-    zero=zero.merge(frame3, how = 'left')
-    print(zero.sort_values('C3', ascending=[False]).head(20))
-    st.write('st.table')
-    st.table(zero)
-    
+
+    st.text("Источник данных: https://www.cbr.ru/banking_sector/otchetnost-kreditnykh-organizaciy/")
 if __name__ == "__main__":
     run()
