@@ -1,6 +1,5 @@
 import streamlit as st
 from streamlit.logger import get_logger
-
 import urllib.request
 import urllib.error
 import rarfile
@@ -17,8 +16,7 @@ def run():
     )
 
     st.write("# Капитал банков по ф.123")
-
-    st.text("Выберите дату, за который нужно отобразить данные.")
+    st.text("Выберите дату, за которую нужно отобразить данные.")
 
     v_year = st.selectbox("Год",list(reversed(range(2000,2024))))
     v_month = st.selectbox("Месяц",list(range(1,13)))
@@ -44,37 +42,28 @@ def run():
         v_url_date = str(v_year) + "0" + str(v_month) + "01"
         v_txt_date = "01.0" + str(v_month) + "." + str(v_year)
 
-    
-    st.text (v_url_date)
-    st.text (v_file)
-
+#    st.text (v_url_date)
+#    st.text (v_file)
     v_num = st.slider('Количество банков в списке:', 0, 1000, 15)
     v_file_b=v_file + "_123B.dbf"
     v_file_d=v_file + "_123D.dbf"
     v_url = "https://www.cbr.ru/vfs/credit/forms/123-" + v_url_date + ".rar"
-    #st.text (v_url)
-    #resp = urllib.request.urlopen(v_url)
     v_url2 = "https://www.cbr.ru/vfs/credit/forms/123-20240101.rar"
     
     try:
         with urllib.request.urlopen(v_url) as resp:
-            #resp = response.read()
             r = rarfile.RarFile(BytesIO(resp.read()))
             st.text ("Капитал банков на " + v_txt_date + " г.")
-            st.text (v_url)
+            #st.text (v_url)
     except urllib.error.URLError:
         with urllib.request.urlopen(v_url2) as resp:
-            #resp = response.read()
             r = rarfile.RarFile(BytesIO(resp.read()))
             v_file_b = "122023_123B.dbf"
             v_file_d = "122023_123D.dbf"
-            st.text ("На выбранную дату данные не найдены, ")
+            st.text ("Не найдены данные за выбранную дату")
             st.text ("Капитал банков на 01.01.2024 г.")
-            st.text (v_url2)
+            #st.text (v_url2)
 
-    #print(data.decode('utf-8'))  # выводит ответ сервера в удобочитаемом формате
-
-    #r = rarfile.RarFile(BytesIO(resp.read()))
     r.extract(v_file_b)
     r.extract(v_file_d)
     
@@ -102,7 +91,6 @@ def run():
     df.insert(0, "RANK", range(1, 1 + len(df)))
     st.dataframe(data=df, column_order=("RANK","REGN","NAME_B","C3"), column_config={"REGN": "Рег.номер","NAME_B":"Наименование банка","C3":"Значение капитала"}, hide_index=True)
     
-
     st.text("Источник данных: https://www.cbr.ru/banking_sector/otchetnost-kreditnykh-organizaciy/")
 if __name__ == "__main__":
     run()
