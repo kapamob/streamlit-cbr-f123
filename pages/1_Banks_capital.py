@@ -17,7 +17,7 @@ def cbr_f123():
     st.write("# Капитал банков по ф.123")
     st.text("Выберите дату, за которую нужно отобразить данные.")
 
-    v_year = st.selectbox("Год",list(reversed(range(2000,2024))))
+    v_year = st.selectbox("Год",list(reversed(range(2014,2024))))
     v_month = st.selectbox("Месяц",list(range(1,13)))
     
     if v_month == 12:
