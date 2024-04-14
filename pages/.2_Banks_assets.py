@@ -99,10 +99,10 @@ def cbr_f123():
 
         df = df[df['NUM_SC'] == 'ITGAP'] #create frame with specific row - '000' that contains the total value of capital
         df = df.drop(columns=df.columns.difference(['REGN', 'NUM_SC', 'IITG']))
-        new_df = merge(df7, df, on='REGN', how='left').fillna(0)
-        new_df['IITG'] = new_df['IITG_x'] + merged_df['IITG_y']
+        new_df = merge(df, df7, on='REGN', how='left').fillna(0)
+        new_df['IITG'] = new_df['IITG_x'] + new_df['IITG_y']
         df = new_df
-        st.dataframe(data=df)    
+        # st.dataframe(data=df)    
         # df = df[df['REGN'] == 2312]
         # https://cbr.ru/banking_sector/credit/coinfo/f101/?regnum=2312&dt=2024-02-01
 
@@ -113,7 +113,7 @@ def cbr_f123():
         df=df.merge(df_names, how = 'left')
         df=df.sort_values(by="IITG", ascending=[False]).head(v_num)
         df.insert(0, "RANK", range(1, 1 + len(df)))
-        st.dataframe(data=df, column_order=("RANK","REGN","NAME_B","VITG"), column_config={"RANK":"№","REGN": "Рег.номер","NAME_B":"Наименование банка","IITG":"Активы (тыс.руб.)"}, hide_index=True)
+        st.dataframe(data=df, column_order=("RANK","REGN","NAME_B","IITG"), column_config={"RANK":"№","REGN": "Рег.номер","NAME_B":"Наименование банка","IITG":"Активы (тыс.руб.)"}, hide_index=True)
         
     st.text("Источник данных: https://www.cbr.ru/banking_sector/otchetnost-kreditnykh-organizaciy/")
     st.text("Репозиторий: https://github.com/kapamob/streamlit-cbr-f123")
