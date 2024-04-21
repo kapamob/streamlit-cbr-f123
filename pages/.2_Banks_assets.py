@@ -95,9 +95,15 @@ def cbr_f123():
         df707['IITG'] = -1 * df707['IITG']
         merged_df = merge(df706, df707, on='REGN', how='left').fillna(0)
         merged_df['IITG'] = merged_df['IITG_x'] + merged_df['IITG_y']
+        df71 = merged_df.drop(columns=merged_df.columns.difference(['REGN', 'NUM_SC', 'IITG']))
+
+        df303 = df[df['NUM_SC'] == '303']
+        df303['IITG'] = -1 * df303['IITG']
+        merged_df = merge(df71, df303, on='REGN', how='left').fillna(0)
+        merged_df['IITG'] = merged_df['IITG_x'] + merged_df['IITG_y']
         df7 = merged_df.drop(columns=merged_df.columns.difference(['REGN', 'NUM_SC', 'IITG']))
 
-        df = df[df['NUM_SC'] == 'ITGAP'] #create frame with specific row - '000' that contains the total value of capital
+        df = df[df['NUM_SC'] == 'ITGAP'] #create frame with specific row - 'ITGAP' that contains the total value of assets
         df = df.drop(columns=df.columns.difference(['REGN', 'NUM_SC', 'IITG']))
         new_df = merge(df, df7, on='REGN', how='left').fillna(0)
         new_df['IITG'] = new_df['IITG_x'] + new_df['IITG_y']
