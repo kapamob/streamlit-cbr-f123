@@ -1,4 +1,3 @@
-##from db import *
 import os
 import streamlit as st
 from streamlit.logger import get_logger
@@ -6,18 +5,19 @@ import pandas as pd
 import sqlalchemy as sql
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
-
 import plotly.graph_objects as go
 
 LOGGER = get_logger(__name__)
 
-##MYSQL_K = os.environ.get("MYSQL_K")
-##st.write(st.secrets.K_USER)
 engine = sql.create_engine("mysql+mysqlconnector://"+st.secrets.K_USER+":"+st.secrets.K_MOTDEPASS+"@"+st.secrets.K_IP+":"+st.secrets.K_PORT+"/"+st.secrets.K_DB)
-##engine = sql.create_engine('"'+MYSQL_K+'"')
 
 def cbr_f123_charts():
-    st.set_page_config(page_title="График капитала банков по ф.123", page_icon="📊")
+    st.set_page_config(page_title="Капитал банков (график)", page_icon="📊")
+    st.sidebar.header("Капитал банков (график)")
+
+    st.write("# Капитал банков по ф.123 (график)")
+    st.text("Динамика значений капитала банков с 2011 года в абсолютном (верхний график) и относительном (сумма положительных значений капиталов на дату = 100%) выражении. Для просмотра на полный экран используйте элементы управления в правом верхнем углу графиков.")
+
     fig1 = render_chart1(engine=engine)
     fig1.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(0, 0, 0)", autosize=False,
     width=1525,
@@ -29,14 +29,12 @@ def cbr_f123_charts():
     height=685,)
     st.plotly_chart(fig2, use_container_width=True)
 
-
 def req(s, engine):
     Session = sessionmaker(bind=engine)
     session = Session()
     result = session.execute(text(f"{s}"))
     df = pd.DataFrame(result)
     return df
-
 
 def render_chart1(engine, year='2024'):
     s = f"""SELECT capital_money.*, banks.bank_name FROM capital_money LEFT JOIN banks ON banks.regn=capital_money.regn 
@@ -182,7 +180,6 @@ def render_chart2(engine, year='2024'):
     #fig.update_layout(barmode='relative')
     #return fig.to_html(full_html=False)
     return fig
-
 
 def get_colors(lst):
     m = ['RGB(255, 255, 0)', 'RGB(0, 0, 255)', 'RGB(255, 0, 0)', 'RGB(255, 69, 0)', 'RGB(255, 255, 100)',
