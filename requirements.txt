@@ -6,3 +6,6 @@ streamlit
 git+https://github.com/markokr/rarfile
 unrar
 dbfread
+plotly
+sqlalchemy
+mysql-connector-python
