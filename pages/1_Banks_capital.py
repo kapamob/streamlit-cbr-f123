@@ -96,9 +96,10 @@ def cbr_f123():
         df = df.merge(df_names, how = 'left')
         df = df.sort_values(by = "C3", ascending = [False]).head(v_num)
         df.insert(0, "RANK", range(1, 1 + len(df)))
+        df = df.rename(columns={"RANK": "№", "REGN": "Рег.номер", "NAME_B": "Наименование банка", "C3": "Значение капитала"}) 
         st.dataframe(df)
                 #st.dataframe(data = df, column_order = ('RANK','REGN','NAME_B','C3'), column_config = {'RANK':'№', 'REGN':'Рег.номер', 'NAME_B':'Наименование банка', 'C3':'Значение капитала'}, hide_index = True)
-        st.dataframe(df, column_order=("RANK","REGN","NAME_B","C3","C1"), column_config={"RANK": "№", "REGN": "Рег.номер", "NAME_B": "Наименование банка", "C3": "Значение капитала","C1": "rr"})
+        #st.dataframe(df, column_order=("RANK","REGN","NAME_B","C3","C1"), column_config={"RANK": "№", "REGN": "Рег.номер", "NAME_B": "Наименование банка", "C3": "Значение капитала","C1": "rr"})
     st.text("Источник данных: https://www.cbr.ru/banking_sector/otchetnost-kreditnykh-organizaciy/")
     st.text("Репозиторий: https://github.com/kapamob/streamlit-cbr-f123")
 
