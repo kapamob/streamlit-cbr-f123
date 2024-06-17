@@ -75,7 +75,7 @@ def cbr_f123():
     if v_try != 2:
         r.extract(v_file_b)
         r.extract(v_file_d)
-    st.text ("78")    
+   
         # special class for correct parsing f123 from dbf. source: https://github.com/olemb/dbfread/issues/20#issuecomment-490289235
         class MyFieldParser(FieldParser):
             def parseN(self, field, data):
@@ -85,12 +85,12 @@ def cbr_f123():
             def parseD(self, field, data):
                 data = data.strip(b'\x00')
                 return super(MyFieldParser, self).parseD(field, data)
-    st.text ("88")    
+       st.text ("88")    
         # load content of a dbf file into a Pandas data frame
         dbf = DBF(v_file_d, parserclass=MyFieldParser)
         df = DataFrame(iter(dbf))
         df = df[df['C1'] == '000'] #create frame with specific row - '000' that contains the total value of capital
-    st.text ("93")        
+        st.text ("93")        
         # load content of a dbf file into a Pandas data frame
         dbf_names = DBF(v_file_b, parserclass=MyFieldParser, encoding='cp866')
         df_names = DataFrame(iter(dbf_names))
@@ -98,7 +98,7 @@ def cbr_f123():
         df = df.merge(df_names, how = 'left')
         df = df.sort_values(by = "C3", ascending = [False]).head(v_num)
         df.insert(0, "RANK", range(1, 1 + len(df)))
-    st.text ("101")
+        st.text ("101")
         st.dataframe(data = df, 
              column_order = ("RANK","REGN","NAME_B","C3"), 
             column_config = {"RANK":"№", "REGN":"Рег.номер", "NAME_B":"Наименование банка", "C3":"Значение капитала"}, 
