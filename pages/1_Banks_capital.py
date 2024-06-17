@@ -85,7 +85,7 @@ def cbr_f123():
             def parseD(self, field, data):
                 data = data.strip(b'\x00')
                 return super(MyFieldParser, self).parseD(field, data)
-       st.text ("88")    
+   
         # load content of a dbf file into a Pandas data frame
         dbf = DBF(v_file_d, parserclass=MyFieldParser)
         df = DataFrame(iter(dbf))
