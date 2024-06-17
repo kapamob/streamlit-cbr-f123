@@ -19,12 +19,12 @@ def cbr_f123_charts():
     st.write("Динамика значений капитала банков с 2011 года в абсолютном (верхний график) и относительном (сумма положительных значений капиталов на дату = 100%) выражении. Для просмотра на полный экран используйте элементы управления в правом верхнем углу графиков.")
 
     fig1 = render_chart1(engine=engine)
-    fig1.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(0, 0, 0)", autosize=False,
+    fig1.update_layout(barmode="relative", margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(0, 0, 0)", autosize=False,
     width=1525,
     height=685,)
     st.plotly_chart(fig1, use_container_width=True)
     fig2 = render_chart2(engine=engine)
-    fig2.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(0, 0, 0)", autosize=False,
+    fig2.update_layout(barmode="relative", margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(0, 0, 0)", autosize=False,
     width=1525,
     height=685,)
     st.plotly_chart(fig2, use_container_width=True)
@@ -38,12 +38,12 @@ def req(s, engine):
 
 def render_chart1(engine, year='2024'):
     s = f"""SELECT capital_money.*, banks.bank_name 
- FROM capital_money 
- LEFT JOIN banks ON banks.regn=capital_money.regn 
-WHERE year(capital_money.dt) > 2010 
-  and capital_money.value > 1 
-  and month(capital_money.dt) in (1,4,7,10)
-    ORDER BY dt, value DESC;"""
+              FROM capital_money 
+              LEFT JOIN banks ON banks.regn=capital_money.regn 
+             WHERE year(capital_money.dt) > 2010 
+               and capital_money.value > 1 
+               and month(capital_money.dt) in (1,4,7,10)
+             ORDER BY dt, value DESC;"""
     df = req(s, engine)
     df['dt'] = pd.to_datetime(df['dt'])
     date_list = df["dt"].unique()
@@ -105,8 +105,8 @@ WHERE year(capital_money.dt) > 2010
     fig.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(175, 225, 255)", autosize=False,
     width=1525,
     height=685,)
-    return fig.to_html(full_html=False)
-    # return fig
+    # return fig.to_html(full_html=False)
+    return fig
 
 
 def render_chart2(engine, year='2024'):
@@ -191,8 +191,8 @@ WHERE year(capital_money.dt) > 2010
     width=1525,
     height=685, hoverlabel_font_color='rgb(0, 0, 0)',)
     #fig.update_layout(barmode='relative')
-    return fig.to_html(full_html=False)
-    # return fig
+    # return fig.to_html(full_html=False)
+    return fig
 
 
 
