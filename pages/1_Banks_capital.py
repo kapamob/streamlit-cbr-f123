@@ -106,7 +106,7 @@ def cbr_f123():
     #st.text("Репозиторий: https://github.com/kapamob/streamlit-cbr-f123")
 
 
-#cbr_f123()
+cbr_f123()
 
-#show_code(cbr_f123)
+show_code(cbr_f123)
 
