@@ -97,7 +97,7 @@ def cbr_f123():
         df = df.sort_values(by = "C3", ascending = [False]).head(v_num)
         df.insert(0, "RANK", range(1, 1 + len(df)))
         
-        st.dataframe(data = df, 
+    #    st.dataframe(data = df, 
              column_order = ("RANK","REGN","NAME_B","C3"), 
             column_config = {"RANK":"№", "REGN":"Рег.номер", "NAME_B":"Наименование банка", "C3":"Значение капитала"}, 
                hide_index = True)
@@ -106,7 +106,7 @@ def cbr_f123():
     #st.text("Репозиторий: https://github.com/kapamob/streamlit-cbr-f123")
 
 
-cbr_f123()
+#cbr_f123()
 
 #show_code(cbr_f123)
 
