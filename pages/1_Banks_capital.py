@@ -41,8 +41,6 @@ def cbr_f123():
         v_url_date = str(v_year) + "0" + str(v_month) + "01"
         v_txt_date = "01.0" + str(v_month) + "." + str(v_year)
 
-#    st.text (v_url_date)
-#    st.text (v_file)
     v_num = st.slider('Количество банков в списке:', 0, 1000, 15)
     v_file_b=v_file + "_123B.dbf"
     v_file_d=v_file + "_123D.dbf"
@@ -57,7 +55,7 @@ def cbr_f123():
     except urllib.error.URLError:
         st.text ("Данные на выбранную дату недоступны. Попытка вывести данные на 01.01.2024 г.")
         v_try = 1
-    st.text ("60")
+    
     if v_try == 1:   
         try:
             with urllib.request.urlopen(v_url2) as resp:
@@ -71,7 +69,7 @@ def cbr_f123():
             st.text ("Данные на 01.01.2024 г. недоступны.")
             st.text ("К сожалению cbr.ru блокирует доступ к сайту при большом количестве запросов. Попробуйте позже")
             v_try = 2      
-    st.text ("74")
+    
     if v_try != 2:
         r.extract(v_file_b)
         r.extract(v_file_d)
@@ -90,7 +88,7 @@ def cbr_f123():
         dbf = DBF(v_file_d, parserclass=MyFieldParser)
         df = DataFrame(iter(dbf))
         df = df[df['C1'] == '000'] #create frame with specific row - '000' that contains the total value of capital
-        st.text ("93")        
+            
         # load content of a dbf file into a Pandas data frame
         dbf_names = DBF(v_file_b, parserclass=MyFieldParser, encoding='cp866')
         df_names = DataFrame(iter(dbf_names))
@@ -98,7 +96,7 @@ def cbr_f123():
         df = df.merge(df_names, how = 'left')
         df = df.sort_values(by = "C3", ascending = [False]).head(v_num)
         df.insert(0, "RANK", range(1, 1 + len(df)))
-        st.text ("101")
+        
         st.dataframe(data = df, 
              column_order = ("RANK","REGN","NAME_B","C3"), 
             column_config = {"RANK":"№", "REGN":"Рег.номер", "NAME_B":"Наименование банка", "C3":"Значение капитала"}, 
@@ -110,5 +108,5 @@ def cbr_f123():
 
 cbr_f123()
 
-show_code(cbr_f123)
+#show_code(cbr_f123)
 
