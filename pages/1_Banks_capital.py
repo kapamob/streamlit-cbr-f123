@@ -102,8 +102,8 @@ def cbr_f123():
             column_config = {"RANK":"№", "REGN":"Рег.номер", "NAME_B":"Наименование банка", "C3":"Значение капитала"}, 
                hide_index = True)
         
-    st.text("Источник данных: https://www.cbr.ru/banking_sector/otchetnost-kreditnykh-organizaciy/")
-    st.text("Репозиторий: https://github.com/kapamob/streamlit-cbr-f123")
+    #st.text("Источник данных: https://www.cbr.ru/banking_sector/otchetnost-kreditnykh-organizaciy/")
+    #st.text("Репозиторий: https://github.com/kapamob/streamlit-cbr-f123")
 
 
 cbr_f123()
