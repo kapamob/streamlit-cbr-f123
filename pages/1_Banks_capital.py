@@ -98,9 +98,9 @@ def cbr_f123():
         df.insert(0, "RANK", range(1, 1 + len(df)))
         
     #    st.dataframe(data = df, 
-             column_order = ("RANK","REGN","NAME_B","C3"), 
-            column_config = {"RANK":"№", "REGN":"Рег.номер", "NAME_B":"Наименование банка", "C3":"Значение капитала"}, 
-               hide_index = True)
+            #  column_order = ("RANK","REGN","NAME_B","C3"), 
+            # column_config = {"RANK":"№", "REGN":"Рег.номер", "NAME_B":"Наименование банка", "C3":"Значение капитала"}, 
+            #    hide_index = True)
         
     #st.text("Источник данных: https://www.cbr.ru/banking_sector/otchetnost-kreditnykh-organizaciy/")
     #st.text("Репозиторий: https://github.com/kapamob/streamlit-cbr-f123")
