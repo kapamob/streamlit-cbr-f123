@@ -37,17 +37,19 @@ def req(s, engine):
     return df
 
 def render_chart1(engine, year='2024'):
-    s = f"""SELECT capital_money.*, banks.bank_name FROM capital_money LEFT JOIN banks ON banks.regn=capital_money.regn 
-    WHERE capital_money.dt > '2010-12-12' and capital_money.value > 1 and 
-    (capital_money.dt LIKE "%-01-%" OR capital_money.dt LIKE "%-04-%" OR 
-    capital_money.dt LIKE "%-07-%" OR capital_money.dt LIKE "%-10-%")
-    ORDER BY dt DESC;"""
+    s = f"""SELECT capital_money.*, banks.bank_name 
+ FROM capital_money 
+ LEFT JOIN banks ON banks.regn=capital_money.regn 
+WHERE year(capital_money.dt) > 2010 
+  and capital_money.value > 1 
+  and month(capital_money.dt) in (1,4,7,10)
+    ORDER BY dt, value DESC;"""
     df = req(s, engine)
     df['dt'] = pd.to_datetime(df['dt'])
     date_list = df["dt"].unique()
     fig = go.Figure()
     final_df = pd.DataFrame()
-    for cur_date in date_list:
+    for cur_date in date_list[::-1]:
         tmp_df = df.loc[df['dt'] == cur_date, :]
         tmp_df.sort_values(by=['value'], ascending=True, inplace=False, na_position='last', kind='quicksort',
                            ignore_index=False)
@@ -92,7 +94,7 @@ def render_chart1(engine, year='2024'):
             name=name,
             orientation='h',
             hoverinfo = 'x+name',
-            hovertemplate="%{x:,.1f}",
+            hovertemplate="%{x:,.3s}",
             # tickcolor = 'rgb(0, 0, 0)',
             marker=dict(
                 color=color[name],
@@ -103,21 +105,26 @@ def render_chart1(engine, year='2024'):
     fig.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(175, 225, 255)", autosize=False,
     width=1525,
     height=685,)
-    # return fig.to_html(full_html=False)
-    return fig
+    return fig.to_html(full_html=False)
+    # return fig
+
 
 def render_chart2(engine, year='2024'):
-    s = f"""SELECT capital_money.*, banks.bank_name FROM capital_money LEFT JOIN banks ON banks.regn=capital_money.regn 
-    WHERE capital_money.dt > '2010-12-12' and capital_money.value > 1 and 
-    (capital_money.dt LIKE "%-01-%" OR capital_money.dt LIKE "%-04-%" OR 
-    capital_money.dt LIKE "%-07-%" OR capital_money.dt LIKE "%-10-%")
-    ORDER BY dt DESC;"""
+    s = f"""SELECT capital_money.*, banks.bank_name 
+ FROM capital_money 
+ LEFT JOIN banks ON banks.regn=capital_money.regn 
+WHERE year(capital_money.dt) > 2010 
+  and capital_money.value > 1 
+  and month(capital_money.dt) in (1,4,7,10)
+    ORDER BY dt, value DESC;"""
     df = req(s, engine)
     df['dt'] = pd.to_datetime(df['dt'])
     date_list = df["dt"].unique()
+    df.sort_values(by=['value'], ascending=True, inplace=False, na_position='last', kind='quicksort',
+                       ignore_index=False)
     fig = go.Figure()
     final_df = pd.DataFrame()
-    for cur_date in date_list:
+    for cur_date in date_list[::-1]:
         tmp_df = df.loc[df['dt'] == cur_date, :]
         tmp_df.sort_values(by=['value'], ascending=True, inplace=False, na_position='last', kind='quicksort',
                            ignore_index=False)
@@ -147,7 +154,13 @@ def render_chart2(engine, year='2024'):
             tmp_df = pd.concat([tmp_df, r], ignore_index=True)
         total_sum = tmp_df['value'].sum()
         tmp_df['percent'] = (tmp_df['value'] / total_sum) * 100
+
         final_df = pd.concat([tmp_df, final_df], ignore_index=True)
+    #final_df.sort_values(by=['value'], ascending=True, inplace=False, na_position='last', kind='quicksort',
+    #                       ignore_index=False)
+    final_df.sort_values(by=['dt', 'value'], ascending=False, inplace=True, na_position='last', kind='quicksort',
+                           ignore_index=False)
+    print(final_df.info)
     names = list(final_df["bank_name"].unique())
     names.remove('top 21-30')
     names.remove('top 31-50')
@@ -166,7 +179,7 @@ def render_chart2(engine, year='2024'):
             name=name,
             orientation='h',
             hoverinfo = 'x+name',
-            hovertemplate="%{x:,.1f}",
+            hovertemplate="%{x:,.1f}%",
             # tickcolor = 'rgb(0, 0, 0)',
             marker=dict(
                 color=color[name],
@@ -176,10 +189,12 @@ def render_chart2(engine, year='2024'):
 
     fig.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(175, 225, 255)", autosize=False,
     width=1525,
-    height=685,)
+    height=685, hoverlabel_font_color='rgb(0, 0, 0)',)
     #fig.update_layout(barmode='relative')
-    #return fig.to_html(full_html=False)
-    return fig
+    return fig.to_html(full_html=False)
+    # return fig
+
+
 
 def get_colors(lst):
     m = ['RGB(255, 255, 0)', 'RGB(0, 0, 255)', 'RGB(255, 0, 0)', 'RGB(255, 69, 0)', 'RGB(255, 255, 100)',
@@ -209,10 +224,10 @@ def get_colors(lst):
          'ПАО Банк Санкт-Петербург': 'rgb(255, 0, 102)', 'АО АКБ НОВИКОМБАНК': 'rgb(153, 0, 255)',
          'ПАО АК БАРС БАНК': 'rgb(0, 204, 102)', 'ПАО БАНК УРАЛСИБ': 'rgb(102, 0, 204)',
          'АО КБ Ситибанк': 'rgb(0, 153, 255)', 'ПАО Промсвязьбанк': 'rgb(255, 102, 0)'}
-    j = 0
+    j = 4
     for i in lst:
         if not i in d.keys():
-            d[i] = j
+            d[i] = m[j]
             j += 1
     return d
 
