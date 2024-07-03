@@ -20,33 +20,23 @@ LOGGER = get_logger(__name__)
 
 def run():
     st.set_page_config(
-        page_title="Hello",
+        page_title="Main",
         page_icon="👋",
     )
 
-    st.write("# Welcome to Streamlit! 👋")
+    st.write("# Welcome to ALM Risk! 👋")
 
-    st.sidebar.success("Select a demo above.")
+    st.sidebar.success("Select a page above.")
 
     st.markdown(
         """
         Streamlit is an open-source app framework built specifically for
         Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
+        **👈 Select a page from the sidebar** to see some examples!
 
-        - Banks Capital - list of banks by capital value from the Bank of Russia website.
-        - Plotting Demo, Dataframe Demo - streamlit demos, I will delete and replace with other projects later)
-        
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
+        - **Banks Capital** - list of banks by capital value from the Bank of Russia website.
+        - **Banks Capital chart** - chart of banks capital since 2011
+        - **Banks PnL chart** - chart of banks PnL since 2012
     """
     )
 
