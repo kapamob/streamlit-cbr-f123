@@ -32,9 +32,9 @@ def run():
         """
         **👈 Select a page from the sidebar** to see some examples!
 
-        - **Banks Capital** - list of banks by capital value from the Bank of Russia website.
-        - **Banks Capital chart** - chart of banks capital since 2011
-        - **Banks PnL chart** - chart of banks PnL since 2012
+        - **Banks Capital** - list of Russian banks by capital value from the Bank of Russia website.
+        - **Banks Capital chart** - chart of Russian banks capital since 2011
+        - **Banks PnL chart** - chart of banks Russian PnL since 2012
     """
     )
 
