@@ -187,7 +187,6 @@ WHERE year(capital_money.dt) > 2010
             hovertemplate="%{x:,.1f}%",
             marker=dict(
                 color=color[name],
-                # line=dict(color='rgba(246, 78, 139, 1.0)', width=3)
             )
         ))
 
