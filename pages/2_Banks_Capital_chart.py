@@ -178,14 +178,13 @@ WHERE year(capital_money.dt) > 2010
     color = get_colors(names)
     for name in names:
         filtered_df = final_df[final_df['bank_name'] == name]
-        filtered_df['value'] = filtered_df['value'].apply(lambda x: x /1000000)
         fig.add_trace(go.Bar(
             y=filtered_df["dt"],
             x=filtered_df["percent"],
             name=name,
             orientation='h',
             hoverinfo = 'x+name',
-            hovertemplate="%{x:.1f} млрд",
+            hovertemplate="%{x:,3s}",
             marker=dict(
                 color=color[name],
                 # line=dict(color='rgba(246, 78, 139, 1.0)', width=3)
