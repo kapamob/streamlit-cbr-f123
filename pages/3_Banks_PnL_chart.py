@@ -204,7 +204,7 @@ WHERE year(capital_money.dt) = 2024 and month(capital_money.dt) = 4
         filtered_df = final_df[final_df['bank_name'] == name]
         dates = filtered_df['dt'].unique()
         for i in dates:
-            if i.month != 1:
+            if i.month != 4:
                 tmp1 = int(filtered_df.loc[filtered_df['dt'] == i, 'sim_itogo'].item())
                 try:
                     tmp2 = int(filtered_df.loc[filtered_df['dt'] == str(i).replace(g2[str(i.month)], g1[g2[str(i.month)]]), 'sim_itogo'].item())
