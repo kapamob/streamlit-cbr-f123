@@ -226,11 +226,11 @@ WHERE year(capital_money.dt) = 2024 and month(capital_money.dt) = 4
     fig.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(175, 225, 255)", autosize=False,
     width=1525,
     height=685,
-    yaxis = dict(
-        type='date',
-        tickformat="%Y", # Формат даты для меток
-        dtick='year',
-    ),                 
+    #yaxis = dict(
+    #    type='date',
+    #    tickformat="%Y", # Формат даты для меток
+    #    dtick='year',
+    #),                 
     )
     return fig
 
