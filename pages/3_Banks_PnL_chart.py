@@ -111,9 +111,11 @@ def render_chart1(engine, year='2024'):
         fig.add_trace(go.Bar(
             y=filtered_df["year"],
             x=filtered_df["sim_itogo"],
+            text=['{:.2}B'.format(x / 1000000000) for x in filtered_df["sim_itogo"]],
             name=name,
             orientation='h',
-            hoverinfo = 'x+name+y',
+            #hoverinfo = 'x+name+y',
+            hoverinfo = text,
             marker=dict(
                 color=color[name],
             )
