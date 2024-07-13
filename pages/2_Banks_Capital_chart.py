@@ -193,10 +193,15 @@ WHERE year(capital_money.dt) > 2010
         ))
 
     fig.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(175, 225, 255)", autosize=False,
-    width=1525,
-    height=685, hoverlabel_font_color='rgb(0, 0, 0)',)
-    #fig.update_layout(barmode='relative')
-    # return fig.to_html(full_html=False)
+        width=1525,
+        height=685, 
+        #hoverlabel_font_color='rgb(0, 0, 0)',
+    )
+    fig.update_yaxes(
+        tickformat="%Y", # Формат даты для меток
+        dtick='M12'
+    )
+
     return fig
 
 
