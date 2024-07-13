@@ -6,6 +6,8 @@ import sqlalchemy as sql
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
 import plotly.graph_objects as go
+import datetime
+from dateutil.relativedelta import *
 
 LOGGER = get_logger(__name__)
 
@@ -199,19 +201,20 @@ WHERE year(capital_money.dt) = 2024 and month(capital_money.dt) = 4
     names.append('top 51-100')
     names.append('top 100 и больше')
     color = get_colors(names)
-    g1 = {'10':'-07-', '07':'-04-', '04':'-01-'}
-    g2 = {'10':'10', '7':'07', '4':'04'}
+    g1 = {'10':'-07-', '07':'-04-', '01':'-10-'}
+    g2 = {'10':'10', '7':'07', '4':'04', '1':'01'}
     for name in names:
         filtered_df = final_df[final_df['bank_name'] == name]
         dates = filtered_df['dt'].unique()
         for i in dates:
             if i.month != 4:
-                tmp1 = int(filtered_df.loc[filtered_df['dt'] == i, 'sim_itogo'].item())
+                #tmp1 = int(filtered_df.loc[filtered_df['dt'] == i, 'sim_itogo'].item())
                 try:
-                    tmp2 = int(filtered_df.loc[filtered_df['dt'] == str(i).replace(g2[str(i.month)], g1[g2[str(i.month)]]), 'sim_itogo'].item())
+                    tmp1 = int(filtered_df.loc[filtered_df['dt'] == i, 'sim_itogo'].item())
+                    tmp2 = int(filtered_df.loc[filtered_df['dt'] == i+relativedelta(months=-3), 'sim_itogo'].item())
+                    filtered_df.loc[filtered_df['dt'] == i, 'sim_itogo'] = tmp1 - tmp2
                 except:
-                    tmp2 = 0
-                filtered_df.loc[filtered_df['dt'] == i, 'sim_itogo'] = tmp1 - tmp2
+                    pass
         fig.add_trace(go.Bar(
             y=filtered_df["dt"],
             x=filtered_df["sim_itogo"],
