@@ -227,8 +227,10 @@ WHERE year(capital_money.dt) = 2024 and month(capital_money.dt) = 4
     width=1525,
     height=685,
     yaxis = dict(
-        tickmode = 'linear',
-        dtick = 1,
+        type='date',
+        tickformat="%Y", # Формат даты для меток
+        tickmode='array',
+        dtick='year',
     ),                 
     )
     return fig
