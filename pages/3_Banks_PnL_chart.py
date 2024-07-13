@@ -105,10 +105,11 @@ def render_chart1(engine, year='2024'):
     names.append('top 51-100')
     names.append('top 100 и больше')
     color = get_colors(names)
+    final_df['year'] = final_df['dt'].dt.year - 1
     for name in names:
         filtered_df = final_df[final_df['bank_name'] == name]
         fig.add_trace(go.Bar(
-            y=filtered_df["dt"],
+            y=filtered_df["year"],
             x=filtered_df["sim_itogo"],
             name=name,
             orientation='h',
@@ -211,6 +212,7 @@ WHERE year(capital_money.dt) = 2024 and month(capital_money.dt) = 4
             name=name,
             orientation='h',
             hoverinfo = 'x+name+y',
+            hovertemplate="%{x} %{y|%d.%m.%Y}",
             marker=dict(
                 color=color[name],
             )
