@@ -104,10 +104,13 @@ def render_chart1(engine, year='2024'):
 
     fig.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(175, 225, 255)", autosize=False,
     width=1525,
-    height=685,)
-    # return fig.to_html(full_html=False)
+    height=685,
+    yaxis = dict(
+        tickmode = 'linear',
+        dtick = 1,
+    ),
+    )
     return fig
-
 
 def render_chart2(engine, year='2024'):
     s = f"""SELECT capital_money.*, banks.bank_name 
