@@ -185,23 +185,19 @@ WHERE year(capital_money.dt) > 2010
             orientation='h',
             hoverinfo = 'x+name',
             hovertemplate="%{x:,.1f}%",
+            # tickcolor = 'rgb(0, 0, 0)',
             marker=dict(
                 color=color[name],
+                # line=dict(color='rgba(246, 78, 139, 1.0)', width=3)
             )
         ))
 
     fig.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(175, 225, 255)", autosize=False,
-        width=1525,
-        height=685, hoverlabel_font_color='rgb(0, 0, 0)',
-    )
-    
-    fig.update_yaxes(
-        tickformat="%Y", # Формат даты для меток
-        dtick='M12'
-    )
-   
+    width=1525,
+    height=685, hoverlabel_font_color='rgb(0, 0, 0)',)
+    #fig.update_layout(barmode='relative')
+    # return fig.to_html(full_html=False)
     return fig
-
 
 
 def get_colors(lst):
