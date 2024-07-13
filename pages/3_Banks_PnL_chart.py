@@ -113,12 +113,14 @@ def render_chart1(engine, year='2024'):
     final_df['year'] = final_df['dt'].dt.year - 1
     for name in names:
         filtered_df = final_df[final_df['bank_name'] == name]
+        filtered_df['sim_itogo'] = filtered_df['sim_itogo'].apply(lambda x: x /1000000)
         fig.add_trace(go.Bar(
             y=filtered_df["year"],
             x=filtered_df["sim_itogo"],
             name=name,
             orientation='h',
             hoverinfo = 'x+name+y',
+            hovertemplate="%{x:.1f} млрд руб.",
             marker=dict(
                 color=color[name],
             )
@@ -208,6 +210,7 @@ WHERE year(capital_money.dt) = 2024 and month(capital_money.dt) = 4
     g2 = {'10':'10', '7':'07', '4':'04', '1':'01'}
     for name in names:
         filtered_df = final_df[final_df['bank_name'] == name]
+        filtered_df['sim_itogo'] = filtered_df['sim_itogo'].apply(lambda x: x /1000000)
         dates = filtered_df['dt'].unique()
         for i in dates:
             if i.month != 4:
@@ -224,7 +227,7 @@ WHERE year(capital_money.dt) = 2024 and month(capital_money.dt) = 4
             name=name,
             orientation='h',
             hoverinfo = 'x+name+y',
-            hovertemplate="%{x} %{y|%d.%m.%Y}",
+            hovertemplate="%{x:.1f} млрд руб. %{y|%d.%m.%Y}",
             marker=dict(
                 color=color[name],
             )
