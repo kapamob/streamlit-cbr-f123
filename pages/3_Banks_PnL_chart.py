@@ -234,10 +234,10 @@ WHERE year(capital_money.dt) = 2024 and month(capital_money.dt) = 4
 
     fig.update_yaxes(
         tickformat="%Y", # Формат даты для меток
-        tickmode='array',
-        tickvals=[datetime.strptime(x, '%Y-%m-%d') for x in filtered_df["dt"].unique()],
-        ticktext=filtered_df["dt"].unique(),
-        dtick='year'
+      #  tickmode='array',
+      #  tickvals=[datetime.strptime(x, '%Y-%m-%d') for x in filtered_df["dt"].unique()],
+      #  ticktext=filtered_df["dt"].unique(),
+        dtick='M12'
     )
 
     return fig
