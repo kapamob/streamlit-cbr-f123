@@ -34,7 +34,7 @@ def run():
 
         - **Banks Capital** - list of Russian banks by capital value from the Bank of Russia website.
         - **Banks Capital chart** - chart of Russian banks capital since 2011
-        - **Banks PnL chart** - chart of banks Russian PnL since 2012
+        - **Banks PnL chart** - chart of Russian banks profit and losses since 2010
     """
     )
 
