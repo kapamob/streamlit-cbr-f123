@@ -184,7 +184,7 @@ WHERE year(capital_money.dt) > 2010
             name=name,
             orientation='h',
             hoverinfo = 'x+name',
-            hovertemplate="%{x:,3s}",
+            hovertemplate="%{x:,.1f}%",
             marker=dict(
                 color=color[name],
                 # line=dict(color='rgba(246, 78, 139, 1.0)', width=3)
