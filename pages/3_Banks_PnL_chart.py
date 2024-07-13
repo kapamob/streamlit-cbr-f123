@@ -111,7 +111,6 @@ def render_chart1(engine, year='2024'):
         fig.add_trace(go.Bar(
             y=filtered_df["year"],
             x=filtered_df["sim_itogo"],
-            #text=['{:.2}B'.format(x / 1000000000) for x in filtered_df["sim_itogo"]],
             name=name,
             orientation='h',
             hoverinfo = 'x+name+y',
@@ -121,15 +120,13 @@ def render_chart1(engine, year='2024'):
         ))
 
     fig.update_layout(barmode='relative', margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor="rgb(175, 225, 255)", autosize=False,
-    width=1525,
-    height=685,
-    yaxis = dict(
-        tickmode = 'linear',
-        dtick = 1,
-    ),
+        width=1525,
+        height=685,
+        yaxis = dict(
+            tickmode = 'linear',
+            dtick = 1,
+        ),
     )
-
-    fig.update_traces(texttemplate="%{y:.2s}")
     
     return fig
 
